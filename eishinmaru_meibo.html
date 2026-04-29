@@ -137,7 +137,7 @@
   <section id="page-member" class="page">
     <h3>会員乗船登録</h3>
     <label>会員番号<span class="req">*</span></label>
-    <input type="number" id="m-no" placeholder="例: 501" inputmode="numeric">
+    <input type="tel" id="m-no" placeholder="例: 501" inputmode="numeric" autocomplete="off">
     <div id="trip-section-member"></div>
     <button class="btn btn-primary" onclick="submitMember()">送信する</button>
     <button class="btn btn-back" onclick="goPage('start')">← 戻る</button>
@@ -146,20 +146,20 @@
   <section id="page-nomember-form" class="page">
     <h3>非会員乗船登録</h3>
     <label>お名前<span class="req">*</span></label>
-    <input type="text" id="n-name" placeholder="例: 山田 太郎">
+    <input type="text" id="n-name" placeholder="例: 山田 太郎" autocomplete="name">
     <label>フリガナ<span class="req">*</span></label>
-    <input type="text" id="n-furigana" placeholder="例: ヤマダ タロウ">
+    <input type="text" id="n-furigana" placeholder="例: ヤマダ タロウ" autocomplete="off">
     <label>性別<span class="req">*</span></label>
     <div class="radio-group">
       <label><input type="radio" name="n-gender" value="男性"> 男性</label>
       <label><input type="radio" name="n-gender" value="女性"> 女性</label>
     </div>
     <label>電話番号<span class="req">*</span></label>
-    <input type="tel" id="n-phone" placeholder="例: 09012345678">
+    <input type="tel" id="n-phone" placeholder="例: 09012345678" autocomplete="tel" inputmode="numeric">
     <label>緊急連絡先</label>
-    <input type="tel" id="n-emergency" placeholder="ご家族等の連絡先">
+    <input type="tel" id="n-emergency" placeholder="ご家族等の連絡先" autocomplete="off" inputmode="numeric">
     <label>住所</label>
-    <input type="text" id="n-address" placeholder="例: 大阪府大阪市…">
+    <input type="text" id="n-address" placeholder="例: 大阪府大阪市…" autocomplete="street-address">
     <div id="trip-section-nomember"></div>
     <button class="btn btn-primary" onclick="submitNoMember()">送信する</button>
     <button class="btn btn-back" onclick="goPage('nomember-choice')">← 戻る</button>
@@ -238,11 +238,13 @@ function submitNoMember(){
   postToGAS({ type:'nomember', name:name, furigana:furi, gender:genderEl.value, phone:phone, emergency:document.getElementById('n-emergency').value.trim(), address:document.getElementById('n-address').value.trim(), date:trip.date, ampm:trip.ampm, fishing:trip.fishing });
 }
 function postToGAS(data){
+  var btns = document.querySelectorAll('.btn-primary');
+  btns.forEach(b=>{ b.disabled = true; b.style.opacity='0.5'; });
   showToast('送信中...');
   fetch(GAS_URL, { method:'POST', body: JSON.stringify(data) })
     .then(r => r.json())
-    .then(res => { if(res.status === 'ok'){ goPage('done'); } else { showToast('エラー: ' + (res.message || '送信に失敗しました')); } })
-    .catch(e => { showToast('通信エラー: ' + e.message); });
+    .then(res => { if(res.status === 'ok'){ goPage('done'); } else { var btns2 = document.querySelectorAll('.btn-primary'); btns2.forEach(b=>{ b.disabled = false; b.style.opacity='1'; }); showToast('エラー: ' + (res.message || '送信に失敗しました')); } })
+    .catch(e => { var btns3 = document.querySelectorAll('.btn-primary'); btns3.forEach(b=>{ b.disabled = false; b.style.opacity='1'; }); showToast('通信エラー: ' + e.message); });
 }
 </script>
 </body>

@@ -254,5 +254,24 @@ function postToGAS(data){
     .catch(e => { var btns3 = document.querySelectorAll('.btn-primary'); btns3.forEach(b=>{ b.disabled = false; b.style.opacity='1'; }); showToast('通信エラー: ' + e.message); });
 }
 </script>
+
+<script>
+window.addEventListener('DOMContentLoaded', function(){
+  try {
+    var p = new URLSearchParams(window.location.search);
+    var memberNo = p.get('member_no');
+    if(memberNo){
+      var num = memberNo.replace(/^No\./i, '').trim();
+      setTimeout(function(){
+        var input = document.getElementById('m-no');
+        if(input){ input.value = num; }
+        if(typeof goPage === 'function'){ goPage('member'); }
+      }, 100);
+    }
+  } catch(e){
+    console.error('Auto member input error:', e);
+  }
+});
+</script>
 </body>
 </html>

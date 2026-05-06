@@ -213,7 +213,7 @@ function buildTripSection(targetId){
   var today = new Date();
   var iso = today.toISOString().slice(0,10);
   var fishOpts = FISHING_OPTIONS.map(f=>'<option value="'+f+'">'+f+'</option>').join('');
-  el.innerHTML = '<hr style="margin:20px 0;"><h4>便情報</h4><label>日付<span class="req">*</span></label><input type="date" class="trip-date" value="'+iso+'"><label>午前 / 午後<span class="req">*</span></label><select class="trip-ampm"><option value="午前">午前</option><option value="午後">午後</option></select><label>釣り物<span class="req">*</span></label><select class="trip-fishing">'+fishOpts+'</select>';
+  el.innerHTML = '<hr style="margin:20px 0;"><h4>便情報</h4><label>午前 / 午後<span class="req">*</span></label><select class="trip-ampm"><option value="午前">午前</option><option value="午後">午後</option></select><label>釣り物<span class="req">*</span></label><select class="trip-fishing">'+fishOpts+'</select>';
 }
 function getTripData(prefix){
   var section = document.getElementById('page-' + prefix);
@@ -228,8 +228,8 @@ function submitMember(){
   var no = document.getElementById('m-no').value.trim();
   if(!no){ showToast('会員番号を入力してください'); return; }
   var trip = getTripData('member');
-  if(!trip.date || !trip.ampm || !trip.fishing){ showToast('便情報を入力してください'); return; }
-  postToGAS({ type:'member', memberNo:'No.'+no, date:trip.date, ampm:trip.ampm, fishing:trip.fishing });
+  if(!trip.ampm || !trip.fishing){ showToast('便情報を入力してください'); return; }
+  postToGAS({ type:'member', memberNo:'No.'+no, ampm:trip.ampm, fishing:trip.fishing });
 }
 function submitNoMember(){
   var name = document.getElementById('n-name').value.trim();
@@ -241,8 +241,8 @@ function submitNoMember(){
   if(!genderEl){ showToast('性別を選択してください'); return; }
   if(!phone){ showToast('電話番号を入力してください'); return; }
   var trip = getTripData('nomember-form');
-  if(!trip.date || !trip.ampm || !trip.fishing){ showToast('便情報を入力してください'); return; }
-  postToGAS({ type:'nomember', name:name, furigana:furi, gender:genderEl.value, phone:phone, emergency:document.getElementById('n-emergency').value.trim(), address:document.getElementById('n-address').value.trim(), date:trip.date, ampm:trip.ampm, fishing:trip.fishing });
+  if(!trip.ampm || !trip.fishing){ showToast('便情報を入力してください'); return; }
+  postToGAS({ type:'nomember', name:name, furigana:furi, gender:genderEl.value, phone:phone, emergency:document.getElementById('n-emergency').value.trim(), address:document.getElementById('n-address').value.trim(), ampm:trip.ampm, fishing:trip.fishing });
 }
 function postToGAS(data){
   var btns = document.querySelectorAll('.btn-primary');

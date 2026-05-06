@@ -217,7 +217,7 @@ function buildTripSection(targetId){
 }
 function getTripData(prefix){
   var section = document.getElementById('page-' + prefix);
-  return { date: section.querySelector('.trip-date').value, ampm: section.querySelector('.trip-ampm').value, fishing: section.querySelector('.trip-fishing').value };
+  return { ampm: section.querySelector('.trip-ampm').value, fishing: section.querySelector('.trip-fishing').value };
 }
 function showToast(msg){
   var t = document.getElementById('toast');
